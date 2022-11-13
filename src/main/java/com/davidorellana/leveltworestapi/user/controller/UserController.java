@@ -3,6 +3,7 @@ package com.davidorellana.leveltworestapi.user.controller;
 import com.davidorellana.leveltworestapi.user.data.User;
 import com.davidorellana.leveltworestapi.user.dto.UserDto;
 import com.davidorellana.leveltworestapi.user.service.UserServiceI;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Get all users")
     @GetMapping
     public ResponseEntity<HashMap<Integer, User>> allUsers() {
         HashMap<Integer, User> allUsers = userService.allUsers();
@@ -31,6 +33,7 @@ public class UserController {
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get a user by its id")
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable("id") Integer idUser) {
         User user = userService.findUserById(idUser);
@@ -40,7 +43,7 @@ public class UserController {
         return new ResponseEntity("That user id does not exist!", HttpStatus.NOT_FOUND);
     }
 
-
+    @Operation(summary = "Create a new User")
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
         User user = new User(userDto);
@@ -51,6 +54,7 @@ public class UserController {
         return new ResponseEntity("User not created!", HttpStatus.BAD_REQUEST);
     }
 
+    @Operation(summary = "Update a user by its id")
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Integer idUser, @RequestBody UserDto userDto) {
         User user = new User(userDto);
@@ -62,12 +66,13 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Delete a user by its id")
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUserById(@PathVariable("id") Integer idUser) {
         User user = userService.deleteUserById(idUser);
         if (user != null) {
             return new ResponseEntity("User Deleted!", HttpStatus.OK);
         }
-        return new ResponseEntity("The user does not exist to be deleted!",HttpStatus.NOT_FOUND);
+        return new ResponseEntity("The user does not exist to be deleted!", HttpStatus.NOT_FOUND);
     }
 }

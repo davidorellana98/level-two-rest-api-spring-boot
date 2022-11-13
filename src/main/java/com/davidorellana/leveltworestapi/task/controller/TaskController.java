@@ -3,6 +3,7 @@ package com.davidorellana.leveltworestapi.task.controller;
 import com.davidorellana.leveltworestapi.task.data.Task;
 import com.davidorellana.leveltworestapi.task.dto.TaskDto;
 import com.davidorellana.leveltworestapi.task.service.TaskServiceI;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @Operation(summary = "Get all tasks")
     @GetMapping
     public ResponseEntity<HashMap<Integer, Task>> allTasks() {
         HashMap<Integer, Task> allTasks = taskService.allTasks();
@@ -31,6 +33,7 @@ public class TaskController {
         return new ResponseEntity<>(allTasks, HttpStatus.OK);
     }
 
+    @Operation(summary = "Create a new Task")
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody TaskDto taskDto) {
         Task task = new Task(taskDto);
@@ -41,6 +44,7 @@ public class TaskController {
         return new ResponseEntity("Task not created!", HttpStatus.BAD_REQUEST);
     }
 
+    @Operation(summary = "Get a task by its id")
     @GetMapping("/{id}")
     public ResponseEntity<Task> findTaskById(@PathVariable("id") Integer idTask) {
         Task task = taskService.findTaskById(idTask);
@@ -50,6 +54,7 @@ public class TaskController {
         return new ResponseEntity("That task id does not exist!", HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Update a task by its id")
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Integer idTask, @RequestBody TaskDto taskDto) {
         Task task = new Task(taskDto);
@@ -61,6 +66,7 @@ public class TaskController {
         }
     }
 
+    @Operation(summary = "Delete a task by its id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Task> deleteTaskById(@PathVariable("id") Integer idTask) {
         Task task = taskService.deleteTaskById(idTask);
